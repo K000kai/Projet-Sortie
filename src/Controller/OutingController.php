@@ -10,8 +10,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/outing')]
+
+#[isGranted('ROLE_USER')]
 class OutingController extends AbstractController
 {
     #[Route('/', name: 'app_outing_index', methods: ['GET'])]
@@ -19,7 +21,7 @@ class OutingController extends AbstractController
     {
 
         $outings =  $outingRepository->findAll();
-        return $this->render('outing/index.html.twig', [
+        return $this->render('main/home.html.twig', [
             'outings' => $outings,
 
         ]);
