@@ -47,7 +47,7 @@ class OutingController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_outing_show', methods: ['GET'])]
+    #[Route('/{outing.id}', name: 'app_outing_show', methods: ['GET'])]
     public function show(Outing $outing): Response
     {
         return $this->render('outing/show.html.twig', [
@@ -55,7 +55,7 @@ class OutingController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_outing_edit', methods: ['GET', 'POST'])]
+    #[Route('/{outing.id}/edit', name: 'app_outing_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Outing $outing, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(OutingType::class, $outing);
@@ -73,7 +73,7 @@ class OutingController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_outing_delete', methods: ['POST'])]
+    #[Route('/{outing.id}', name: 'app_outing_delete', methods: ['POST'])]
     public function delete(Request $request, Outing $outing, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$outing->getId(), $request->request->get('_token'))) {
