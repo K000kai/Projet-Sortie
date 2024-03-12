@@ -23,7 +23,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var list<string> The user roles
      */
     #[ORM\Column]
-    private array $roles = [];
+    private array $roles;
+
+    public function __construct()
+    {
+        $this->roles = ['ROLE_USER'];
+    }
 
     /**
      * @var string The hashed password

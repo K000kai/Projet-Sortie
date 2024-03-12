@@ -38,6 +38,19 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
+    /*Je crée une fonction pour que l'utilisateur puisse se connecter avec son email ou son username
+     J'ai donc besoin de trouver un utilisateur par son email ou son username
+     */
+    public function findUserByEmailOrUsername(string $usernameOrEmail) : ?User{
+        return $this->createQueryBuilder('u')
+            ->where('u.username = :identifier')
+            ->orWhere('u.email = :identifier')
+            ->setParameter('identifier',$usernameOrEmail)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleResult();
+    }
+
 //    /**
 //     * @return User[] Returns an array of User objects
 //     */
