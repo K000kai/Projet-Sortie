@@ -30,10 +30,16 @@ class Profile
     private ?string $Email = null;
 
     #[ORM\Column(length: 255)]
+    private ?string $Password = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $ConfirmPass = null;
+
+    #[ORM\Column(length: 255)]
     private ?string $Campus = null;
 
     #[ORM\Column(type: Types::BLOB, nullable: true)]
-    private  $Picture = null;
+    private $Picture = null;
 
     public function getId(): ?int
     {
@@ -96,6 +102,30 @@ class Profile
     public function setEmail(string $Email): static
     {
         $this->Email = $Email;
+
+        return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->Password;
+    }
+
+    public function setPassword(string $Password): static
+    {
+        $this->Password = $Password;
+
+        return $this;
+    }
+
+    public function getConfirmPass(): ?string
+    {
+        return $this->ConfirmPass;
+    }
+
+    public function setConfirmPass(string $ConfirmPass): static
+    {
+        $this->ConfirmPass = $ConfirmPass;
 
         return $this;
     }
