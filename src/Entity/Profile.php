@@ -32,8 +32,8 @@ class Profile
     #[ORM\Column(length: 255)]
     private ?string $Campus = null;
 
-    #[ORM\Column(type: Types::BLOB, nullable: true)]
-    private  $Picture = null;
+    #[ORM\Column(length:255, nullable: true)]
+    private ?string $Picture = null;
 
     public function getId(): ?int
     {
@@ -112,7 +112,7 @@ class Profile
         return $this;
     }
 
-    public function getPicture(): null
+    public function getPicture(): string
     {
         return $this->Picture;
     }

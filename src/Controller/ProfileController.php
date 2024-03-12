@@ -45,7 +45,7 @@ class ProfileController extends AbstractController
         ]);
     }
 
-    #[Route('/{profile.id}', name: 'app_profile_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'app_profile_show',requirements: ['id' => '\d+'], methods: ['GET'])]
     public function show(Profile $profile): Response
     {
         return $this->render('profile/show.html.twig', [
@@ -55,7 +55,7 @@ class ProfileController extends AbstractController
 
 
 
-    #[Route('/{id}/edit', name: 'app_profile_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'app_profile_edit',requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function edit(Request $request, Profile $profile, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(ProfileType::class, $profile);
@@ -74,7 +74,7 @@ class ProfileController extends AbstractController
         ]);
     }
 
-    #[Route('/{profile.id}', name: 'app_profile_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_profile_delete',requirements: ['id' => '\d+'], methods: ['POST'])]
     public function delete(Request $request, Profile $profile, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$profile->getId(), $request->request->get('_token'))) {
