@@ -38,22 +38,6 @@ class Outing
     #[ORM\JoinColumn(nullable: false)]
     private ?Location $location = null;
 
-    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'outings')]
-    private Collection $users;
-
-    #[ORM\ManyToOne(inversedBy: 'outings')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Campus $campus = null;
-
-    #[ORM\ManyToOne(inversedBy: 'outings')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Status $status = null;
-
-    public function __construct()
-    {
-        $this->users = new ArrayCollection();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -142,56 +126,4 @@ class Outing
 
         return $this;
     }
-
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(User $user): static
-    {
-        if (!$this->users->contains($user)) {
-            $this->users->add($user);
-            $user->addOuting($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): static
-    {
-        if ($this->users->removeElement($user)) {
-            $user->removeOuting($this);
-        }
-
-        return $this;
-    }
-
-    public function getCampus(): ?Campus
-    {
-        return $this->campus;
-    }
-
-    public function setCampus(?Campus $campus): static
-    {
-        $this->campus = $campus;
-
-        return $this;
-    }
-
-    public function getStatus(): ?Status
-    {
-        return $this->status;
-    }
-
-    public function setStatus(?Status $status): static
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
 }
