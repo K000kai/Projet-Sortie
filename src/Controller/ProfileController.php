@@ -46,6 +46,7 @@ class ProfileController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_profile_show',requirements: ['id' => '\d+'], methods: ['GET'])]
+
     public function show(Profile $profile): Response
     {
         return $this->render('profile/show.html.twig', [
