@@ -2,10 +2,15 @@
 
 {% block title %}Edit Profile{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+{% endblock %}
+
 {% block body %}
     <h1>Edit Profile</h1>
-
-    {{ include('profile/_form.html.twig', {'button_label': 'Update'}) }}
+    <div class="login">
+        {{ include('profile/_form.html.twig', {'button_label': 'Update'}) }}
+    </div>
 
     <a href="{{ path('app_profile_index' ) }}">back to list</a>
 
