@@ -14,6 +14,7 @@ class CampusFixtures extends Fixture
         $campusNantes->setName('Nantes');
 
         $manager->persist($campusNantes);
+        $this->addReference('campus_nantes',$campusNantes);
         $manager->flush();
     }
 }
