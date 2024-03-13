@@ -27,8 +27,9 @@
                     <td>{{ outing.registrationDeadline ? outing.registrationDeadline|date('Y-m-d') : '' }}</td>
                     <td>{{ outing.nbRegistrationMax }}</td>
                     <td>
-                        <a class="btn btn-info" href="{{ path('app_outing_show', {'id': outing.id}) }}">show</a>
-                        <a class="btn btn-info" href="{{ path('app_outing_edit', {'id': outing.id}) }}">edit</a>
+                        <a class="btn btn-info" href="{{ path('app_outing_show', {'id': outing.id}) }}">Voir</a>
+                        <a class="btn btn-info" href="{{ path('app_outing_edit', {'id': outing.id}) }}">Editer</a>
+                        <a class="btn btn-info" href="{{ path('app_user_register', {'id': outing.id}) }}">S'inscrire</a>
                     </td>
                 </tr>
             {% else %}
@@ -39,7 +40,7 @@
             </tbody>
         </table>
 
-        <a class="btn btn-info" href="{{ path('app_outing_new') }}">Create new</a>
+        <a class="btn btn-info" href="{{ path('app_outing_new') }}">Créer Sortie</a>
     </div>
 {% endblock %}
 
