@@ -2,50 +2,45 @@
 
 
 {% block body %}
-    <h1>Début du meilleur site ever</h1>
+    <div class="container">
 
-    <h3>Filtrer les sorties</h3>
+        <div class="row text-center">
+        <h1>Liste des sorties</h1>
+        </div>
 
 
-    <h1>Outing index</h1>
-
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>DateTimeStart</th>
-            <th>Duration</th>
-            <th>RegistrationDeadline</th>
-            <th>NbRegistrationMax</th>
-            <th>InfoOuting</th>
-            <th>actions</th>
-        </tr>
-        </thead>
-        <tbody>
-       {% for outing in outings %}
+        <table class="table table-responsive table-info table-striped table-hover text-center">
+            <thead>
             <tr>
-                <td>{{ outing.id }}</td>
-                <td>{{ outing.name }}</td>
-                <td>{{ outing.dateTimeStart ? outing.dateTimeStart|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ outing.duration }}</td>
-                <td>{{ outing.registrationDeadline ? outing.registrationDeadline|date('Y-m-d') : '' }}</td>
-                <td>{{ outing.nbRegistrationMax }}</td>
-                <td>{{ outing.infoOuting }}</td>
-                <td>
-                    <a href="{{ path('app_outing_show', {'id': outing.id}) }}">show</a>
-                    <a href="{{ path('app_outing_edit', {'id': outing.id}) }}">edit</a>
-                </td>
+                <th>Nom de la Sortie</th>
+                <th>Date de la Sortie</th>
+                <th>Clôture</th>
+                <th>inscrits/places</th>
+                <th>actions</th>
             </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for outing in outings %}
+                <tr>
+                    <td>{{ outing.name }}</td>
+                    <td>{{ outing.dateTimeStart ? outing.dateTimeStart|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ outing.registrationDeadline ? outing.registrationDeadline|date('Y-m-d') : '' }}</td>
+                    <td>{{ outing.nbRegistrationMax }}</td>
+                    <td>
+                        <a class="btn btn-info" href="{{ path('app_outing_show', {'id': outing.id}) }}">show</a>
+                        <a class="btn btn-info" href="{{ path('app_outing_edit', {'id': outing.id}) }}">edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-    <a href="{{ path('app_outing_new') }}">Create new</a>
+        <a class="btn btn-info" href="{{ path('app_outing_new') }}">Create new</a>
+    </div>
 {% endblock %}
 
 {% block title %} {{ parent() }} | Home {% endblock %}
