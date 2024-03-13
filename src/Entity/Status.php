@@ -26,6 +26,7 @@ class Status
         $this->outings = new ArrayCollection();
     }
 
+
     public function getId(): ?int
     {
         return $this->id;
@@ -72,4 +73,5 @@ class Status
 
         return $this;
     }
+
 }
