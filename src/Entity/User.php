@@ -30,7 +30,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->roles = ['ROLE_USER'];
-        $this->outings = new ArrayCollection();
+
     }
 
     /**
@@ -50,9 +50,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private ?bool $isVerified = false;
-
-    #[ORM\ManyToMany(targetEntity: Outing::class, inversedBy: 'users')]
-    private Collection $outings;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
@@ -183,26 +180,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Outing>
      */
-    public function getOutings(): Collection
-    {
-        return $this->outings;
-    }
-
-    public function addOuting(Outing $outing): static
-    {
-        if (!$this->outings->contains($outing)) {
-            $this->outings->add($outing);
-        }
-
-        return $this;
-    }
-
-    public function removeOuting(Outing $outing): static
-    {
-        $this->outings->removeElement($outing);
-
-        return $this;
-    }
 
     public function getCampus(): ?Campus
     {
@@ -215,4 +192,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+
 }

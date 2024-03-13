@@ -21,6 +21,7 @@ class UserFixtures extends Fixture
         $user->setName('Doe');
         $user->setFirstName('John');
         $user->setPhoneNumber('0606060606');
+        $user->setCampus($this->getReference('campus_nantes'));
         $user->setIsVerified(true);
         $manager->persist($user);
 
