@@ -15,6 +15,24 @@ class CampusFixtures extends Fixture
 
         $manager->persist($campusNantes);
         $this->addReference('campus_nantes',$campusNantes);
+
+        $campusRennes =new Campus();
+        $campusRennes->setName('Rennes');
+        $manager->persist($campusRennes);
+        $this->addReference('campus_rennes',$campusRennes);
+
+        $campusNiort =new Campus();
+        $campusNiort->setName('Niort');
+        $manager->persist($campusNiort);
+        $this->addReference('campus_niort',$campusNiort);
+
+        $campusQuimper =new Campus();
+        $campusQuimper->setName('Quimper');
+        $manager->persist($campusQuimper);
+        $this->addReference('campus_quimper',$campusQuimper);
+
+
         $manager->flush();
+
     }
 }
