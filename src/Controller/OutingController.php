@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\City;
+use App\Entity\Location;
 use App\Entity\Outing;
+use App\Form\OutingForm;
 use App\Form\OutingType;
 use App\Repository\OutingRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,11 +33,22 @@ class OutingController extends AbstractController
     #[Route('/new', name: 'app_outing_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+
+        $city = new City();
+        $location = new Location();
         $outing = new Outing();
-        $form = $this->createForm(OutingType::class, $outing);
+
+        $form = $this->createForm(OutingForm::class, ['city' => $city, 'location' => $location, 'outing' => $outing]);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid())
+        {
+
+            $location->setCity($city);
+            $outing->setLocation($location);
+
+            $entityManager->persist($city);
+            $entityManager->persist($location);
             $entityManager->persist($outing);
             $entityManager->flush();
 
@@ -43,7 +57,7 @@ class OutingController extends AbstractController
 
         return $this->render('outing/new.html.twig', [
             'outing' => $outing,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
