@@ -32,7 +32,6 @@ class Profile
     #[ORM\Column(length: 255)]
     private ?string $Campus = null;
 
-
     #[ORM\Column(length:255, nullable: true)]
     private ?string $Picture = null;
 
