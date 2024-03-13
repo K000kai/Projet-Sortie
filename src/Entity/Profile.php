@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\ProfileRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use phpDocumentor\Reflection\File;
 
 #[ORM\Entity(repositoryClass: ProfileRepository::class)]
 class Profile
@@ -33,8 +32,9 @@ class Profile
     #[ORM\Column(length: 255)]
     private ?string $Campus = null;
 
-    #[ORM\Column(type: Types::BLOB, nullable: true)]
-    private ?File $Picture = null;
+
+    #[ORM\Column(length:255, nullable: true)]
+    private ?string $Picture = null;
 
     public function getId(): ?int
     {
@@ -113,7 +113,7 @@ class Profile
         return $this;
     }
 
-    public function getPicture(): null
+    public function getPicture(): string
     {
         return $this->Picture;
     }

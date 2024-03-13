@@ -3,9 +3,11 @@
 namespace App\Form;
 
 use App\Entity\Outing;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
 
 class OutingType extends AbstractType
 {
@@ -21,8 +23,7 @@ class OutingType extends AbstractType
                 'widget' => 'single_text'
             ])
             ->add('nbRegistrationMax')
-            ->add('infoOuting')
-        ;
+            ->add('infoOuting');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

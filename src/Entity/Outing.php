@@ -32,6 +32,10 @@ class Outing
     #[ORM\Column(length: 1000)]
     private ?string $infoOuting = null;
 
+    #[ORM\ManyToOne(inversedBy: 'outings')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Location $location = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -105,6 +109,18 @@ class Outing
     public function setInfoOuting(string $infoOuting): static
     {
         $this->infoOuting = $infoOuting;
+
+        return $this;
+    }
+
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?Location $location): static
+    {
+        $this->location = $location;
 
         return $this;
     }

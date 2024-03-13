@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\City;
+use App\Entity\Location;
 use App\Entity\Outing;
+use App\Form\OutingForm;
 use App\Form\OutingType;
 use App\Repository\OutingRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,11 +33,22 @@ class OutingController extends AbstractController
     #[Route('/new', name: 'app_outing_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+
+        $city = new City();
+        $location = new Location();
         $outing = new Outing();
-        $form = $this->createForm(OutingType::class, $outing);
+
+        $form = $this->createForm(OutingForm::class, ['city' => $city, 'location' => $location, 'outing' => $outing]);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid())
+        {
+
+            $location->setCity($city);
+            $outing->setLocation($location);
+
+            $entityManager->persist($city);
+            $entityManager->persist($location);
             $entityManager->persist($outing);
             $entityManager->flush();
 
@@ -43,11 +57,11 @@ class OutingController extends AbstractController
 
         return $this->render('outing/new.html.twig', [
             'outing' => $outing,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
-    #[Route('/{outing.id}', name: 'app_outing_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'app_outing_show', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function show(Outing $outing): Response
     {
         return $this->render('outing/show.html.twig', [
@@ -55,7 +69,7 @@ class OutingController extends AbstractController
         ]);
     }
 
-    #[Route('/{outing.id}/edit', name: 'app_outing_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'app_outing_edit',requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function edit(Request $request, Outing $outing, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(OutingType::class, $outing);
@@ -73,7 +87,7 @@ class OutingController extends AbstractController
         ]);
     }
 
-    #[Route('/{outing.id}', name: 'app_outing_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_outing_delete',requirements: ['id' => '\d+'], methods: ['POST'])]
     public function delete(Request $request, Outing $outing, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$outing->getId(), $request->request->get('_token'))) {
