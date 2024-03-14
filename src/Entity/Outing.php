@@ -42,6 +42,14 @@ class Outing
     #[ORM\JoinColumn(nullable: false)]
     private ?Status $status = null;
 
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'outings')]
+    private Collection $User;
+
+    public function __construct()
+    {
+        $this->User = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -139,6 +147,30 @@ class Outing
     public function setStatus(?Status $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUser(): Collection
+    {
+        return $this->User;
+    }
+
+    public function addUser(User $user): static
+    {
+        if (!$this->User->contains($user)) {
+            $this->User->add($user);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): static
+    {
+        $this->User->removeElement($user);
 
         return $this;
     }

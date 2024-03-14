@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Profile;
+use App\Entity\User;
 use App\Form\ProfileType;
 use App\Repository\ProfileRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -45,11 +46,13 @@ class ProfileController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_profile_show',requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function show(Profile $profile): Response
+    #[Route('/{id}/show', name: 'app_profile_show',requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function show(Profile $profile, User $user): Response
     {
         return $this->render('profile/show.html.twig', [
             'profile' => $profile,
+            'user' => $user
+
         ]);
     }
 
@@ -74,7 +77,7 @@ class ProfileController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_profile_delete',requirements: ['id' => '\d+'], methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_profile_delete',requirements: ['id' => '\d+'], methods: ['POST'])]
     public function delete(Request $request, Profile $profile, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$profile->getId(), $request->request->get('_token'))) {
