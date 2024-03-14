@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\City;
 use App\Entity\Location;
 use App\Entity\Outing;
+use App\Entity\Status;
 use App\Form\OutingForm;
 use App\Form\OutingType;
 use App\Repository\OutingRepository;
@@ -34,29 +35,31 @@ class OutingController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
 
-        $city = new City();
+       /* $city = new City();
         $location = new Location();
         $outing = new Outing();
 
-        $form = $this->createForm(OutingForm::class, ['city' => $city, 'location' => $location, 'outing' => $outing]);
+        $form = $this->createForm(OutingForm::class, ['city' => $city, 'location' => $location, 'outing' => $outing]);*/
+        $outing = new Outing();
+        $status=new Status();
+        $status->setLibelle('Créée');
+        $outing->setStatus($status);
+
+        $form = $this->createForm(OutingType::class, $outing);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid())
         {
-
-            $location->setCity($city);
-            $outing->setLocation($location);
-
-            $entityManager->persist($city);
-            $entityManager->persist($location);
             $entityManager->persist($outing);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_outing_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_outing_index', [
+                'outing'=> $outing
+            ]);
         }
 
         return $this->render('outing/new.html.twig', [
-            'outing' => $outing,
+            'outing'=> $outing,
             'form' => $form->createView(),
         ]);
     }

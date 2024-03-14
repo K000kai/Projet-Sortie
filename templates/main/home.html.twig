@@ -16,6 +16,7 @@
                 <th>Date de la Sortie</th>
                 <th>Clôture</th>
                 <th>inscrits/places</th>
+                <th>Etat</th>
                 <th>actions</th>
             </tr>
             </thead>
@@ -23,9 +24,10 @@
             {% for outing in outings %}
                 <tr>
                     <td>{{ outing.name }}</td>
-                    <td>{{ outing.dateTimeStart ? outing.dateTimeStart|date('Y-m-d H:i:s') : '' }}</td>
-                    <td>{{ outing.registrationDeadline ? outing.registrationDeadline|date('Y-m-d') : '' }}</td>
+                    <td>{{ outing.dateTimeStart ? outing.dateTimeStart|date('d/m/Y H:i') : '' }}</td>
+                    <td>{{ outing.registrationDeadline ? outing.registrationDeadline|date('d-m-Y') : '' }}</td>
                     <td>{{ outing.nbRegistrationMax }}</td>
+                    <td>{{ outing.status }}</td>
                     <td>
                         <a class="btn btn-info" href="{{ path('app_outing_show', {'id': outing.id}) }}">Voir</a>
                         <a class="btn btn-info" href="{{ path('app_outing_edit', {'id': outing.id}) }}">Editer</a>
