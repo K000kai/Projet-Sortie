@@ -38,7 +38,7 @@ class Outing
     #[ORM\JoinColumn(nullable: false)]
     private ?Location $location = null;
 
-    #[ORM\ManyToOne(inversedBy: 'outings')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'outings')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Status $status = null;
 
