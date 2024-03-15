@@ -35,11 +35,6 @@ class OutingController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
 
-       /* $city = new City();
-        $location = new Location();
-        $outing = new Outing();
-
-        $form = $this->createForm(OutingForm::class, ['city' => $city, 'location' => $location, 'outing' => $outing]);*/
         $outing = new Outing();
         $status=new Status();
         $status->setLibelle('Créée');
@@ -57,7 +52,6 @@ class OutingController extends AbstractController
                 'outing'=> $outing
             ]);
         }
-
         return $this->render('outing/new.html.twig', [
             'outing'=> $outing,
             'form' => $form->createView(),

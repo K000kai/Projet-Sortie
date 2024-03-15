@@ -72,4 +72,8 @@ class Campus
 
         return $this;
     }
+    function __toString()
+    {
+        return $this->name;
+    }
 }

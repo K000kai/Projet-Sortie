@@ -2,16 +2,46 @@
 
 {% block title %}New Outing{% endblock %}
 
+
 {% block body %}
-    <h1>Create new Outing</h1>
+    <h1>Créer une sortie</h1>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-8">
-                {{ include('outing/_form.html.twig') }}
+            <div class="col-6">
+                {{ form_start(form) }}
+                {{ form_row(form.name) }}
+                {{ form_row(form.dateTimeStart) }}
+                {{ form_row(form.registrationDeadline) }}
+                {{ form_row(form.nbRegistrationMax) }}
+                {{ form_row(form.duration) }}
+                {{ form_row(form.infoOuting) }}
+            </div>
+            <div class="col-6">
+                <h5>Mon Campus</h5>
+                <h5>{{ app.user.campus }}</h5>
+
                 <br>
-                <a class="btn btn-info" href="{{ path('app_outing_index') }}">back to list</a>
+                {{ form_row(form.city) }}
+                {{ form_row(form.location)}}
+
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-4">
+                <button type="submit" class="btn btn-info">
+                    Enregistrer
+                </button>
+                {{ form_end(form) }}
+            </div>
+            <div class="col-4">
+             <a class="btn btn-info" href="{{ path('app_outing_index') }}">Publier La sortie</a>
+            </div>
+            <div class="col-4">
+                <a class="btn btn-info" href="{{ path('app_outing_index') }}">Annuler</a>
             </div>
         </div>
     </div>
+
+
 
 {% endblock %}
