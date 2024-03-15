@@ -3,3 +3,7 @@ body {
     background-attachment: fixed;
     color: white;
 }
+
+.container {
+    padding: 20px;
+}

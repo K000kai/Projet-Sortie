@@ -7,7 +7,6 @@ use App\Entity\Location;
 use App\Entity\Outing;
 use App\Entity\Status;
 use App\Entity\User;
-use App\Form\OutingForm;
 use App\Form\OutingType;
 use App\Repository\OutingRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -36,15 +35,11 @@ class OutingController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
 
-       /* $city = new City();
-        $location = new Location();
-        $outing = new Outing();
-
-        $form = $this->createForm(OutingForm::class, ['city' => $city, 'location' => $location, 'outing' => $outing]);*/
         $outing = new Outing();
         $status=new Status();
         $status->setLibelle('Créée');
         $outing->setStatus($status);
+        $outing->setOrganizer($this->getUser());
 
         $form = $this->createForm(OutingType::class, $outing);
         $form->handleRequest($request);
@@ -58,7 +53,6 @@ class OutingController extends AbstractController
                 'outing'=> $outing
             ]);
         }
-
         return $this->render('outing/new.html.twig', [
             'outing'=> $outing,
             'form' => $form->createView(),
@@ -66,10 +60,11 @@ class OutingController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_outing_show', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function show(Outing $outing): Response
+    public function show(Outing $outing,OutingRepository $outingRepository): Response
     {
         return $this->render('outing/show.html.twig', [
             'outing' => $outing,
+
         ]);
     }
 

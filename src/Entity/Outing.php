@@ -182,7 +182,8 @@ class Outing
     public function removeUser(User $user): static
     {
         $this->User->removeElement($user);
-
+        return $this;
+    }
     public function getCampus(): ?Campus
     {
         return $this->campus;

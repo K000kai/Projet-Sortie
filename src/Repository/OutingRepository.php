@@ -21,6 +21,7 @@ class OutingRepository extends ServiceEntityRepository
         parent::__construct($registry, Outing::class);
     }
 
+
     //    /**
     //     * @return Outing[] Returns an array of Outing objects
     //     */

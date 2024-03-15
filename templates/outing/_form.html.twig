@@ -1,7 +1,48 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
+{% extends 'base.html.twig' %}
 
-<button type="submit" class="btn btn-info">
-    Ajouter la sortie
-</button>
-{{ form_end(form) }}
+{% block body %}
+
+{% endblock %}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-6">
+            {{ form_start(form) }}
+            {{ form_row(form.name) }}
+            {{ form_row(form.dateTimeStart) }}
+            {{ form_row(form.registrationDeadline) }}
+            {{ form_row(form.nbRegistrationMax) }}
+            {{ form_row(form.duration) }}
+            {{ form_row(form.infoOuting) }}
+        </div>
+        <div class="col-6">
+            <h5>Mon Campus</h5>
+            <h5>{{ app.user.campus }}</h5>
+
+            <br>
+            {{ form_row(form.city) }}
+            {{ form_row(form.location)}}
+
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <button type="submit" class="btn btn-info">
+                Enregistrer
+            </button>
+            {{ form_end(form) }}
+        </div>
+        <div class="col-4">
+            <a class="btn btn-info" href="{{ path('app_outing_index') }}">Publier La sortie</a>
+        </div>
+        <div class="col-4">
+            <a class="btn btn-info" href="{{ path('app_outing_index') }}">Annuler</a>
+        </div>
+    </div>
+</div>
+
+
+{% block title %}
+
+{% endblock %}
+

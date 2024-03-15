@@ -25,6 +25,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $user->setCampus($this->getReference('campus_nantes'));
         $user->setIsVerified(true);
         $manager->persist($user);
+        $this->addReference('user_1', $user);
 
         $user2 = new User();
         $user2->setEmail('jane@doe.fr');
@@ -35,6 +36,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $user2->setCampus($this->getReference('campus_niort'));
         $user2->setIsVerified(true);
         $manager->persist($user2);
+        $this->addReference('user_2', $user2);
 
         $user3 = new User();
         $user3->setEmail('teddy@riner.fr');
@@ -45,6 +47,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $user3->setCampus($this->getReference('campus_rennes'));
         $user3->setIsVerified(true);
         $manager->persist($user3);
+        $this->addReference('user_3', $user3);
 
         $manager->flush();
     }
