@@ -53,7 +53,7 @@ class OutingType extends AbstractType
                 'label' => 'Lieu',
                 'placeholder' => 'Sélectionnez un lieu',
                 'required' => false,
-                'mapped' => false, // Ce champ ne mappe pas à une propriété de l'entité Outing
+                'mapped' => true,
             ]);
         ;
 

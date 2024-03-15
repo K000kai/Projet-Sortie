@@ -39,6 +39,7 @@ class OutingController extends AbstractController
         $status=new Status();
         $status->setLibelle('Créée');
         $outing->setStatus($status);
+        $outing->setCampus($this->getUser()->getCampus());
         $outing->setOrganizer($this->getUser());
 
         $form = $this->createForm(OutingType::class, $outing);
@@ -47,6 +48,7 @@ class OutingController extends AbstractController
         if ($form->isSubmitted() && $form->isValid())
         {
             $entityManager->persist($outing);
+
             $entityManager->flush();
 
             return $this->redirectToRoute('app_outing_index', [
@@ -76,7 +78,7 @@ class OutingController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
+            $this->addFlash('success', 'La sortie a bien été modifiée');
             return $this->redirectToRoute('app_outing_index', [], Response::HTTP_SEE_OTHER);
         }
 

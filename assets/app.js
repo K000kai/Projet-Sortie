@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     citySelect.addEventListener('change', function() {
         let cityId= citySelect.value;
-
+        console.log(cityId);
         // Envoyer une requête AJAX pour récupérer les lieux associés à la ville sélectionnée
         fetch('/Projet Sortir/public/locations/'+cityId)
             .then(response => response.json())
