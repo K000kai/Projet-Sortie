@@ -6,6 +6,7 @@ use App\Entity\City;
 use App\Entity\Location;
 use App\Entity\Outing;
 use App\Entity\Status;
+use App\Entity\User;
 use App\Form\OutingForm;
 use App\Form\OutingType;
 use App\Repository\OutingRepository;
@@ -83,6 +84,33 @@ class OutingController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    #[Route('/register/{id}', name: 'app_user_register',requirements: ['id' => '\d+'], methods:['GET', 'POST'])]
+    public function addUser(Request $request, Outing $outing , EntityManagerInterface $entityManager): Response
+    {
+        $entityManager1 = $entityManager;
+        $outing = $entityManager1->getRepository(Outing::class)->find($outing);
+        if (!$outing) {
+            $this->addFlash('error', 'Sortie introuvable');
+            return $this->redirectToRoute('app_outing_index');
+        }elseif ($outing->getRegistrationDeadline() < new \DateTime('now')) {
+            $this->addFlash('error', 'La date limite d\'inscription est dépassée');
+            return $this->redirectToRoute('app_outing_index');
+        }elseif ($outing->getDateTimeStart() < new \DateTime('now')) {
+            $this->addFlash('error', 'La sortie est déja passée');
+            return $this->redirectToRoute('app_outing_index');
+        }else {
+            $user = $entityManager1->getRepository(User::class)->find($this->getUser()->getId());
+            $outing->addUser($user);
+            $entityManager1->persist($outing);
+            $entityManager1->flush();
+            $this->addFlash('success', 'Vous êtes inscrit à la sortie');
+        }
+        return $this->render('user/register.html.twig', [
+            'controller_name' => 'OutingController',
+        ]);
+    }
+
 
     #[Route('/{id}', name: 'app_outing_delete',requirements: ['id' => '\d+'], methods: ['POST'])]
     public function delete(Request $request, Outing $outing, EntityManagerInterface $entityManager): Response
