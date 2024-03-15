@@ -3,8 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\Outing;
+use App\Entity\Campus;
+use App\Model\SearchFilterData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @extends ServiceEntityRepository<Outing>
@@ -21,9 +24,31 @@ class OutingRepository extends ServiceEntityRepository
         parent::__construct($registry, Outing::class);
     }
 
-   /* public function getUsersInOuting{
-        $qb=$this->
-    }*/
+    public function findSearch (SearchFilterData $searchFilterData, Request $request): array
+    {
+        $query = $this
+            ->createQueryBuilder('outing')
+            ->select ('outing', 'campus')
+            ->leftJoin('outing.campus', 'campus');
+
+
+        if (!empty($searchFilterData->zoneRecherche)) {
+            $query =$query
+                ->andWhere('outing.name LIKE :zoneRecherche')
+                ->setParameter('zoneRecherche', "%{$searchFilterData->zoneRecherche}%")
+            ;
+        }
+        if (!empty($searchFilterData->Campus)) {
+            $query =$query
+                ->andWhere(' outing.campus = :Campus')
+                ->setParameter('Campus', $searchFilterData->Campus)
+            ;
+        }
+
+        //return $this->$request->getCurrentRequest()->query->get('zoneRecherche');
+        return $query->getQuery()->getResult();
+    }
+
     //    /**
     //     * @return Outing[] Returns an array of Outing objects
     //     */

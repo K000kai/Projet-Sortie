@@ -6,6 +6,8 @@ use App\Entity\City;
 use App\Entity\Location;
 use App\Entity\Outing;
 use App\Entity\Status;
+use App\Model\SearchFilterData;
+use App\Form\FilterType;
 use App\Entity\User;
 use App\Form\OutingType;
 use App\Repository\OutingRepository;
@@ -21,12 +23,26 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class OutingController extends AbstractController
 {
     #[Route('/', name: 'app_outing_index', methods: ['GET'])]
-    public function index(OutingRepository $outingRepository): Response
+    public function index(OutingRepository $outingRepository, Request $request ): Response
     {
+        $searchFilterData = new SearchFilterData();
+        $form = $this->createForm(FilterType::class, $searchFilterData );
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $outings =  $outingRepository->findSearch($searchFilterData, $request);
+            //dd($searchFilterData);
+            return $this->render('main/home.html.twig', [
+                'outings' => $outings,
+                'form'=> $form->createView()
+            ]);
+        }
 
         $outings =  $outingRepository->findAll();
         return $this->render('main/home.html.twig', [
             'outings' => $outings,
+            'form'=> $form->createView()
 
         ]);
     }
