@@ -4,10 +4,14 @@
 {% block body %}
     <div class="container">
 
-        <div class="row text-center">
-        <h1>Liste des sorties</h1>
+        <div class>
+            <h3>Filter les sorties</h3>
+            {% include 'Filter/_filter.html.twig' with {form: form} only %}
         </div>
 
+        <div class="row text-center">
+        <h3>Liste des sorties</h3>
+        </div>
 
         <table class="table table-responsive table-info table-striped table-hover text-center">
             <thead>

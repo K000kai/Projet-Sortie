@@ -76,4 +76,5 @@ class Campus
     {
         return $this->name;
     }
+
 }
