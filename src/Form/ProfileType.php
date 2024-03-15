@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Campus;
 use App\Entity\Profile;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,7 +19,10 @@ class ProfileType extends AbstractType
             ->add('Surname')
             ->add('Phone')
             ->add('Email')
-            ->add('Campus')
+            ->add('Campus', EntityType::class, [
+                'class' => Campus::class,
+                'choice_label' => 'name',
+            ])
             ->add('Picture')
         ;
     }
