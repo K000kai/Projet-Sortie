@@ -45,6 +45,10 @@ class Outing
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'outings')]
     private Collection $User;
 
+    #[ORM\ManyToOne(inversedBy: 'Organizer')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $Organizer = null;
+
     public function __construct()
     {
         $this->User = new ArrayCollection();
@@ -171,6 +175,18 @@ class Outing
     public function removeUser(User $user): static
     {
         $this->User->removeElement($user);
+
+        return $this;
+    }
+
+    public function getOrganizer(): ?User
+    {
+        return $this->Organizer;
+    }
+
+    public function setOrganizer(?User $Organizer): static
+    {
+        $this->Organizer = $Organizer;
 
         return $this;
     }

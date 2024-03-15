@@ -31,6 +31,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->roles = ['ROLE_USER'];
         $this->outings = new ArrayCollection();
+        $this->Organizer = new ArrayCollection();
 
     }
 
@@ -58,6 +59,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToMany(targetEntity: Outing::class, mappedBy: 'User')]
     private Collection $outings;
+
+    #[ORM\OneToMany(targetEntity: Outing::class, mappedBy: 'Organizer')]
+    private Collection $Organizer;
 
     public function getId(): ?int
     {
@@ -219,6 +223,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->outings->removeElement($outing)) {
             $outing->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Outing>
+     */
+    public function getOrganizer(): Collection
+    {
+        return $this->Organizer;
+    }
+
+    public function addOrganizer(Outing $organizer): static
+    {
+        if (!$this->Organizer->contains($organizer)) {
+            $this->Organizer->add($organizer);
+            $organizer->setOrganizer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrganizer(Outing $organizer): static
+    {
+        if ($this->Organizer->removeElement($organizer)) {
+            // set the owning side to null (unless already changed)
+            if ($organizer->getOrganizer() === $this) {
+                $organizer->setOrganizer(null);
+            }
         }
 
         return $this;
