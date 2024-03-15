@@ -42,6 +42,7 @@ class Outing
     #[ORM\JoinColumn(nullable: false)]
     private ?Status $status = null;
 
+
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'outings')]
     private Collection $User;
 
@@ -53,6 +54,11 @@ class Outing
     {
         $this->User = new ArrayCollection();
     }
+
+    #[ORM\ManyToOne(inversedBy: 'outings')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Campus $campus = null;
+
 
     public function getId(): ?int
     {
@@ -155,6 +161,7 @@ class Outing
         return $this;
     }
 
+
     /**
      * @return Collection<int, User>
      */
@@ -175,6 +182,16 @@ class Outing
     public function removeUser(User $user): static
     {
         $this->User->removeElement($user);
+
+    public function getCampus(): ?Campus
+    {
+        return $this->campus;
+    }
+
+    public function setCampus(?Campus $campus): static
+    {
+        $this->campus = $campus;
+
 
         return $this;
     }
