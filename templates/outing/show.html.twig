@@ -32,6 +32,15 @@
                 <td>{{ outing.nbRegistrationMax }}</td>
             </tr>
             <tr>
+                <th>Lieu</th>
+                <td>{{ outing.location.name }}</td>
+            <tr>
+            <tr>
+                <th>Adresse</th>
+                <td>{{ outing.location.street }} à {{outing.location.city }}</td>
+            <tr>
+            <tr>
+
                 <th>Etat</th>
                 <td>{{ outing.status }}</td>
             </tr>
@@ -45,11 +54,11 @@
             </tr>
         </thead>
         <tbody>
-       {# {% for outing in outings %}
+        {% for user in outing.user %}
             <tr>
-                <td>{{ outing.user }}</td>
+                <td>{{ user.name}}  {{user.firstName }}</td>
             </tr>
-        {% endfor %}#}
+        {% endfor %}
 
         </tbody>
 

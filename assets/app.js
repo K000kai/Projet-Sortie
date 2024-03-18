@@ -9,33 +9,42 @@ import './styles/app.css';
 
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
 
+    const form = document.getElementById('outing_form');
+    const form_select_city = document.getElementById('outing_city');
+    const form_select_location = document.getElementById('outing_location');
+
+    const updateForm = async (data, url, method) => {
+        const req = await fetch(url, {
+            method: method,
+            body: data,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'charset': 'utf-8'
+            }
+
+        });
+
+        const text = await req.text();
+
+        return text;
+    };
 
 
-document.addEventListener('DOMContentLoaded', function() {
-    let citySelect = document.getElementById('outing_city');
-    let locationSelect = document.getElementById('outing_location');
+    const parseTextToHtml = (text) => {
+        const parser = new DOMParser();
+        const html = parser.parseFromString(text, 'text/html');
 
-    citySelect.addEventListener('change', function() {
-        let cityId= citySelect.value;
-        console.log(cityId);
-        // Envoyer une requête AJAX pour récupérer les lieux associés à la ville sélectionnée
-        fetch('/Projet Sortir/public/locations/'+cityId)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
+        return html;
+    };
 
-                locationSelect.innerHTML = '';
+    const changeOptions = async (e) => {
+        const requestBody = e.target.getAttribute('name') + '=' + e.target.value;
+        const updateFormResponse = await updateForm(requestBody, form.getAttribute('action'), form.getAttribute('method'));
+        const html = parseTextToHtml(updateFormResponse);
 
-                // Ajouter les nouvelles options basées sur les données de la réponse
-                data.forEach(function(location) {
-                    let option = document.createElement('option');
-                    option.value = location.id;
-                    option.textContent = location.name;
-                    locationSelect.appendChild(option);
-                });
-            })
-            .catch(error => {
-                console.error('Erreur lors de la récupération des lieux :', error);
-            });
-    });
-});
+        const new_form_select_location = html.getElementById('outing_location');
+        form_select_location.innerHTML = new_form_select_location.innerHTML;
+    };
+
+form_select_city.addEventListener('change', async (e) => changeOptions(e));
+
