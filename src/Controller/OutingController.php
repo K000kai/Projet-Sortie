@@ -58,7 +58,7 @@ class OutingController extends AbstractController
         $outing->setCampus($this->getUser()->getCampus());
         $outing->setOrganizer($this->getUser());
 
-        $form = $this->createForm(OutingType::class, $outing);
+        $form = $this->createForm(OutingType::class, $outing,['action' => $this->generateUrl('app_outing_new')]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid())
@@ -110,13 +110,13 @@ class OutingController extends AbstractController
         $entityManager1 = $entityManager;
         $outing = $entityManager1->getRepository(Outing::class)->find($outing);
         if (!$outing) {
-            $this->addFlash('error', 'Sortie introuvable');
+            $this->addFlash('danger', 'Sortie introuvable');
             return $this->redirectToRoute('app_outing_index');
         }elseif ($outing->getRegistrationDeadline() < new \DateTime('now')) {
-            $this->addFlash('error', 'La date limite d\'inscription est dépassée');
+            $this->addFlash('danger', 'La date limite d\'inscription est dépassée');
             return $this->redirectToRoute('app_outing_index');
         }elseif ($outing->getDateTimeStart() < new \DateTime('now')) {
-            $this->addFlash('error', 'La sortie est déja passée');
+            $this->addFlash('danger', 'La sortie est déja passée');
             return $this->redirectToRoute('app_outing_index');
         }else {
             $user = $entityManager1->getRepository(User::class)->find($this->getUser()->getId());

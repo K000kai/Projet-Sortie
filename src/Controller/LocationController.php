@@ -15,10 +15,15 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class LocationController extends AbstractController
 {
+    #[Route('/location/add', name: 'add_location', methods: ['POST'])]
     public function addLocation(Request $request, EntityManagerInterface $entityManager): Response
     {
         $location = new Location();
-        $locationForm = $this->createForm(LocationType::class, $location);
+        $locationForm = $this->createForm(LocationType::class, $location, [
+            'action' => $this->generateUrl('get_locations_by_city'),
+            'method' => 'POST',
+        ]
+        );
         $locationForm->handleRequest($request);
 
         if ($locationForm->isSubmitted() && $locationForm->isValid()) {
@@ -32,12 +37,11 @@ class LocationController extends AbstractController
     }
 
 
-    #[Route('/locations/{id}', name: 'get_locations_by_city', methods: ['GET'])]
+    #[Route('/locations/{id}', name: 'get_locations_by_city', methods: ['GET','POST'])]
     public function getLocationsByCity(City $city, LocationRepository $locationRepository): JsonResponse
     {
         // Utilisez votre repository de lieux pour récupérer les lieux associés à la ville spécifiée
         $locations = $locationRepository->findBy(['city'=>$city]);
-
         // Formatez les données pour les renvoyer en tant que réponse JSON
         $data = [];
         foreach ($locations as $location) {

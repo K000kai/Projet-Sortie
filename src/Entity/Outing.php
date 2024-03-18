@@ -82,7 +82,7 @@ class Outing
         return $this->dateTimeStart;
     }
 
-    public function setDateTimeStart(\DateTimeInterface $dateTimeStart): static
+    public function setDateTimeStart(?\DateTimeInterface $dateTimeStart): static
     {
         $this->dateTimeStart = $dateTimeStart;
 
@@ -106,7 +106,7 @@ class Outing
         return $this->registrationDeadline;
     }
 
-    public function setRegistrationDeadline(\DateTimeInterface $registrationDeadline): static
+    public function setRegistrationDeadline(?\DateTimeInterface $registrationDeadline): static
     {
         $this->registrationDeadline = $registrationDeadline;
 

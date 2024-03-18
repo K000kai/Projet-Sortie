@@ -8,13 +8,14 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-6">
-                {{ form_start(form) }}
+                {{ form_start(form, { attr: { id: 'outing_form' } }) }}
                 {{ form_row(form.name) }}
                 {{ form_row(form.dateTimeStart) }}
                 {{ form_row(form.registrationDeadline) }}
                 {{ form_row(form.nbRegistrationMax) }}
                 {{ form_row(form.duration) }}
                 {{ form_row(form.infoOuting) }}
+
             </div>
             <div class="col-6">
                 <h5>Mon Campus</h5>
@@ -45,3 +46,5 @@
 
 
 {% endblock %}
+
+
