@@ -40,7 +40,26 @@
                             <a class="btn btn-info" href="{{ path('app_outing_edit', {'id': outing.id}) }}">Editer</a>
                         {% endif %}
 
-                        <a class="btn btn-info" href="{{ path('app_user_register', {'id': outing.id}) }}">S'inscrire</a>
+
+                        {% if outing.User.contains(app.user) %}
+                            <a class="btn btn-info" href="{{ path('app_user_unsuscribe',{'id': outing.id}) }}">Se desister</a>
+                          {% else %}
+                              <a class="btn btn-info" href="{{ path('app_user_register', {'id': outing.id}) }}">S'inscrire</a>
+                        {% endif %}
+
+                       {# {% for user in outing.User %}
+                            {% if app.user.id == user.id %}
+                                #}{#On affiche le lien pour se désinscrire si l'utilisateur connecté est bien dans la liste#}{#
+                                <a class="btn btn-info" href="{{ path('app_user_unsuscribe',{'id': outing.id}) }}">Se desister</a>
+
+                        #}{# Afficher le lien pour s'inscrire uniquement si l'utilisateur n'est pas déjà inscrit #}{#
+                            {% else %}
+                                <a class="btn btn-info" href="{{ path('app_user_register', {'id': outing.id}) }}">S'inscrire</a>
+                            {% endif %}
+                        {% endfor %}#}
+
+
+
                     </td>
                 </tr>
             {% else %}
