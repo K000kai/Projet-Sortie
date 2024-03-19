@@ -4,8 +4,10 @@ namespace App\Repository;
 
 use App\Entity\Outing;
 use App\Entity\Campus;
+use App\Entity\User;
 use App\Model\SearchFilterData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -17,6 +19,8 @@ use Symfony\Component\HttpFoundation\Request;
  * @method Outing[]    findAll()
  * @method Outing[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
+
+
 class OutingRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -24,13 +28,15 @@ class OutingRepository extends ServiceEntityRepository
         parent::__construct($registry, Outing::class);
     }
 
-    public function findSearch (SearchFilterData $searchFilterData, Request $request): array
+    public function findSearch (SearchFilterData $searchFilterData): array
     {
         $query = $this
             ->createQueryBuilder('outing')
-            ->select ('outing', 'campus')
-            ->leftJoin('outing.campus', 'campus');
+            ->select ('outing', 'campus', 'user')
+            ->leftJoin('outing.campus', 'campus')
+            ->leftJoin('outing.User', 'user');
 
+       // $user = $entityManager->getRepository(User::class)->find($this->getUser()->getId());
 
         if (!empty($searchFilterData->zoneRecherche)) {
             $query =$query
@@ -44,8 +50,30 @@ class OutingRepository extends ServiceEntityRepository
                 ->setParameter('Campus', $searchFilterData->Campus)
             ;
         }
+        if (!empty($searchFilterData->min)) {
+            $query =$query
+                ->andWhere(' outing.dateTimeStart >= :min')
+                ->setParameter('min', $searchFilterData->min)
+            ;
+        }
+        if (!empty($searchFilterData->max)) {
+            $query =$query
+                ->andWhere(' outing.dateTimeStart <= :max')
+                ->setParameter('max', $searchFilterData->max)
+            ;
+        }
+        if (!empty($searchFilterData->organisateur)) {
+            //$name = $user->getName();
+            //$firstName = $user->getFirstName();
+            //$organizer = $firstName . $name;
+            $query =$query
+                ->andWhere(' outing.Organizer = :organisateur')
+                ->setParameter('organisateur', $searchFilterData->organisateur);
+                //->setParameter('organisateur', $searchFilterData->organisateur);
+                //->setParameter('organisateur', "%{$firstName}{$name"%{)
 
-        //return $this->$request->getCurrentRequest()->query->get('zoneRecherche');
+        }
+
         return $query->getQuery()->getResult();
     }
 
@@ -73,4 +101,5 @@ class OutingRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
 }
