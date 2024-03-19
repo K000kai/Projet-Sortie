@@ -14,7 +14,7 @@ class Profile
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 25)]
+    #[ORM\Column(length: 25, unique: true)]
     private ?string $Username = null;
 
     #[ORM\Column(length: 40)]
@@ -34,6 +34,9 @@ class Profile
 
     #[ORM\Column(length:255, nullable: true)]
     private ?string $Picture = null;
+
+    #[ORM\OneToOne(mappedBy: 'profile', cascade: ['persist', 'remove'])]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -120,6 +123,23 @@ class Profile
     public function setPicture($Picture): static
     {
         $this->Picture = $Picture;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): static
+    {
+        // set the owning side of the relation if necessary
+        if ($user->getProfile() !== $this) {
+            $user->setProfile($this);
+        }
+
+        $this->user = $user;
 
         return $this;
     }
