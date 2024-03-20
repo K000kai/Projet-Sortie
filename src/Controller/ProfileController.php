@@ -95,4 +95,14 @@ class ProfileController extends AbstractController
 
         return $this->redirectToRoute('app_profile_index', [], Response::HTTP_SEE_OTHER);
     }
+    #[Route('/showProfile/{id}', name: 'app_showProfile',requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function showProfile(User $user): Response
+    {
+        $profile = $user->getProfile();
+        return $this->render('profile/show.html.twig', [
+            'profile' => $profile,
+        ]);
+
+
+    }
 }

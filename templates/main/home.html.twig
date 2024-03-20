@@ -33,7 +33,7 @@
                     <td>{{ outing.registrationDeadline ? outing.registrationDeadline|date('d-m-Y') : '' }}</td>
                     <td>{{ outing.User|length }}/{{ outing.nbRegistrationMax }}</td>
                     <td>{{ outing.status }}</td>
-                    <td>{{ outing.organizer}}</td>
+                    <td><a href="{{ path('app_showProfile', {'id': outing.organizer.id}) }}">{{ outing.organizer }}</a></td>
                     <td>
                         <a class="btn btn-info" href="{{ path('app_outing_show', {'id': outing.id}) }}">Voir</a>
                         {% if app.user == outing.organizer %}
