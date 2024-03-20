@@ -8,6 +8,7 @@ use App\Form\ProfileType;
 use App\Repository\ProfileRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -46,13 +47,20 @@ class ProfileController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/show', name: 'app_profile_show',requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function show(Profile $profile, User $user): Response
+    #[Route('/profile/show', name: 'app_profile_show', methods: ['GET'])]
+    public function show(Security $security): Response
     {
+        $user = $security->getUser();
+
+        if (!$user) {
+            throw new \Exception('Utilisateur non authentifié');
+        }
+
+        $profile = $user->getProfile();
+
         return $this->render('profile/show.html.twig', [
             'profile' => $profile,
             'user' => $user
-
         ]);
     }
 

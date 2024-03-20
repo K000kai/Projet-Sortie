@@ -47,8 +47,50 @@ class LocationFixtures extends Fixture implements DependentFixtureInterface
         $manager->persist($location4);
         $this->addReference('location_meltdown', $location4);
 
-        // $product = new Product();
-        // $manager->persist($product);
+        $location5 = new Location();
+        $location5->setName('Cineville');
+        $location5->setStreet('Rue Marie Curie');
+        $location5->setLatitude(47.191296);
+        $location5->setLongitude(-1.488433);
+        $location5->setCity($this->getReference('city_saintsebastien'));
+        $manager->persist($location5);
+        $this->addReference('location_cineville', $location5);
+
+        $location6 = new Location();
+        $location6->setName('Patinoire Nantes');
+        $location6->setStreet('Bd du Petit Port');
+        $location6->setLatitude(47.2385);
+        $location6->setLongitude(-1.5563);
+        $location6->setCity($this->getReference('city_nantes'));
+        $manager->persist($location6);
+        $this->addReference('location_patinoire', $location6);
+
+        $location7 = new Location();
+        $location7->setName('L\'Antipode');
+        $location7->setStreet('75 avenue Jules Maniez');
+        $location7->setLatitude(48.1136);
+        $location7->setLongitude(-1.6773);
+        $location7->setCity($this->getReference('city_rennes'));
+        $manager->persist($location7);
+        $this->addReference('location_antipode', $location7);
+
+        $location8 = new Location();
+        $location8->setName('Bonobo Parc');
+        $location8->setStreet('45 Rue du président Sadate');
+        $location8->setLatitude(47.98100463070951);
+        $location8->setLongitude( -4.098364255311936);
+        $location8->setCity($this->getReference('city_quimper'));
+        $manager->persist($location8);
+        $this->addReference('location_bonobo', $location8);
+
+        $location9 = new Location();
+        $location9->setName('Théatre Jean Richard');
+        $location9->setStreet('202 avenue Saint-Jean d\'Angély');
+        $location9->setLatitude(46.316838719462304);
+        $location9->setLongitude(-0.464446);
+        $location9->setCity($this->getReference('city_niort'));
+        $manager->persist($location9);
+        $this->addReference('location_theatre', $location9);
 
         $manager->flush();
     }

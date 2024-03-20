@@ -19,10 +19,6 @@ class ProfileType extends AbstractType
             ->add('Surname')
             ->add('Phone')
             ->add('Email')
-            ->add('Campus', EntityType::class, [
-                'class' => Campus::class,
-                'choice_label' => 'name',
-            ])
             ->add('Picture')
         ;
     }
