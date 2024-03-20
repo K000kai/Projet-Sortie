@@ -13,11 +13,9 @@ use App\Form\OutingType;
 use App\Repository\OutingRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 
@@ -51,15 +49,14 @@ class OutingController extends AbstractController
             //dd($searchFilterData);
             return $this->render('main/home.html.twig', [
                 'outings' => $outings,
-                'form' => $form->createView()
+                'form' => $form->createView(),
             ]);
         }
 
         $outings = $outingRepository->findAll();
         return $this->render('main/home.html.twig', [
             'outings' => $outings,
-            'form' => $form->createView()
-
+            'form' => $form->createView(),
         ]);
     }
 
@@ -119,11 +116,13 @@ class OutingController extends AbstractController
         ]);
     }
 
-    #[Route('/register/{id}', name: 'app_user_register',requirements: ['id' => '\d+'], methods:['GET', 'POST'])]
-    public function addUser(Request $request, Outing $outing , EntityManagerInterface $entityManager): Response
+
+    #[Route('/register/{id}', name: 'app_user_register', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    public function addUser(Request $request, Outing $outing, EntityManagerInterface $entityManager,OutingRepository $outingRepository): Response
     {
         $entityManager1 = $entityManager;
         $outing = $entityManager1->getRepository(Outing::class)->find($outing);
+        $userRegister = $outingRepository->countUserInOuting();
         if (!$outing) {
             $this->addFlash('danger', 'Sortie introuvable');
             return $this->redirectToRoute('app_outing_index');
@@ -133,7 +132,10 @@ class OutingController extends AbstractController
         }elseif ($outing->getDateTimeStart() < new \DateTime('now')) {
             $this->addFlash('danger', 'La sortie est déja passée');
             return $this->redirectToRoute('app_outing_index');
-        }else {
+        } elseif ($userRegister>=$outing->getNbRegistrationMax()){
+            $this->addFlash('danger','la sortie est déja complète');
+            return $this->redirectToRoute('app_outing_index');
+        } else {
             $user = $entityManager1->getRepository(User::class)->find($this->getUser()->getId());
             $outing->addUser($user);
             $entityManager1->persist($outing);
@@ -158,9 +160,12 @@ class OutingController extends AbstractController
     }
 
     #[Route('/unsuscribe/{id}', name: 'app_user_unsuscribe', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
-    public function unsuscribe(EntityManagerInterface $entityManager, $id):Response
+    public function unsuscribe(EntityManagerInterface $entityManager, $id, OutingRepository $outingRepository):Response
     {
         $user = $entityManager->getRepository(User::class)->find($this->getUser()->getId());
+
+
+
 
         // Vérifier que l'utilisateur est connecté
         if (!$user) {
@@ -174,7 +179,7 @@ class OutingController extends AbstractController
 
             $this->addFlash('danger','La sortie n\'existe pas ');
         }
-
+        // Supprimer l'utilisateur de la sortie
         $outing->removeUser($user);
         $entityManager->flush();
 
