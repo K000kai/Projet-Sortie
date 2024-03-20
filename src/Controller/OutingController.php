@@ -101,7 +101,7 @@ class OutingController extends AbstractController
     #[Route('/{id}/edit', name: 'app_outing_edit',requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function edit(Request $request, Outing $outing, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(OutingType::class, $outing);
+        $form = $this->createForm(OutingType::class, $outing, ['action' => $this->generateUrl('app_outing_new')]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

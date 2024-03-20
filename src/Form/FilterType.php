@@ -56,11 +56,10 @@ class FilterType extends AbstractType
                 'label' => 'Sorties auxquelles je ne suis pas inscrit/e',
                 'required' => false,
             ])
-
-            /*->add('pastOutings', CheckboxType::class, [
+            ->add('pastOutings', CheckboxType::class, [
                 'label' => 'Sorties passées',
                 'required' => false,
-            ])*/
+            ])
         ;
 
 
