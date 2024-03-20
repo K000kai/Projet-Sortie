@@ -70,7 +70,6 @@ class OutingType extends AbstractType
                 ]);
             };
 
-
             // BLOC qui écoute le changement de la ville avec le eventListener
             $builder->get('city')->addEventListener(
                 FormEvents::POST_SUBMIT,

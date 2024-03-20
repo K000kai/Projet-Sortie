@@ -1,5 +1,4 @@
 const form = document.getElementById('outing_form');
-console.log(form);
 const form_select_city = document.getElementById('outing_city');
 const form_select_location = document.getElementById('outing_location');
 
