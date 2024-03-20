@@ -1,4 +1,25 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button type="submit" class="btn btn-info">Rechercher</button>
-{{ form_end(form) }}
+ {{ form_start(form) }}
+        <div class="row">
+            <div class="col" style="margin-right: 5rem">
+                {{ form_row(form.zoneRecherche) }}
+                {{ form_row(form.Campus) }}
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form_row(form.min) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_row(form.max) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col " style="margin-top: 3rem" >
+
+                {{ form_row(form.organisateur) }}
+                {{ form_row(form.inscrit) }}
+                {{ form_row(form.nonInscrit) }}
+                <button type="submit" class="btn btn-info">Rechercher</button>
+
+            </div>
+        </div>
+ {{ form_end(form) }}

@@ -2,7 +2,8 @@
 
 namespace App\Controller;
 
-
+use App\Entity\City;
+use App\Entity\Location;
 use App\Entity\Outing;
 use App\Entity\Status;
 use App\Model\SearchFilterData;
@@ -23,8 +24,7 @@ class OutingController extends AbstractController
 {
     #[Route('/', name: 'app_outing_index', methods: ['GET'])]
 
-    public function index(OutingRepository $outingRepository, Request $request): Response
-
+    public function index(OutingRepository $outingRepository, Request $request ): Response
     {
 
         $searchFilterData = new SearchFilterData();
@@ -34,11 +34,18 @@ class OutingController extends AbstractController
         if ($form->get('organisateur')->getData()) {
             $searchFilterData->organisateur = $this->getUser();
         }
+        if ($form->get('inscrit')->getData()) {
+            $searchFilterData->inscrit = $this->getUser();
+        }
+        if ($form->get('nonInscrit')->getData()) {
+            $searchFilterData->nonInscrit = $this->getUser();
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             $outings = $outingRepository->findSearch($searchFilterData, $request);
 
+            $outings =  $outingRepository->findSearch($searchFilterData);
             //dd($searchFilterData);
             return $this->render('main/home.html.twig', [
                 'outings' => $outings,
@@ -77,13 +84,13 @@ class OutingController extends AbstractController
             ]);
         }
         return $this->render('outing/new.html.twig', [
-            'outing' => $outing,
+            'outing'=> $outing,
             'form' => $form->createView(),
         ]);
     }
 
     #[Route('/{id}', name: 'app_outing_show', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function show(Outing $outing, OutingRepository $outingRepository): Response
+    public function show(Outing $outing,OutingRepository $outingRepository): Response
     {
         return $this->render('outing/show.html.twig', [
             'outing' => $outing,
@@ -91,10 +98,10 @@ class OutingController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_outing_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'app_outing_edit',requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function edit(Request $request, Outing $outing, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(OutingType::class, $outing, ['action' => $this->generateUrl('app_outing_new')]);
+        $form = $this->createForm(OutingType::class, $outing);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -109,6 +116,7 @@ class OutingController extends AbstractController
         ]);
     }
 
+
     #[Route('/register/{id}', name: 'app_user_register', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function addUser(Request $request, Outing $outing, EntityManagerInterface $entityManager,OutingRepository $outingRepository): Response
     {
@@ -118,10 +126,10 @@ class OutingController extends AbstractController
         if (!$outing) {
             $this->addFlash('danger', 'Sortie introuvable');
             return $this->redirectToRoute('app_outing_index');
-        } elseif ($outing->getRegistrationDeadline() < new \DateTime('now')) {
+        }elseif ($outing->getRegistrationDeadline() < new \DateTime('now')) {
             $this->addFlash('danger', 'La date limite d\'inscription est dépassée');
             return $this->redirectToRoute('app_outing_index');
-        } elseif ($outing->getDateTimeStart() < new \DateTime('now')) {
+        }elseif ($outing->getDateTimeStart() < new \DateTime('now')) {
             $this->addFlash('danger', 'La sortie est déja passée');
             return $this->redirectToRoute('app_outing_index');
         } elseif ($userRegister>=$outing->getNbRegistrationMax()){
@@ -140,10 +148,10 @@ class OutingController extends AbstractController
     }
 
 
-    #[Route('/{id}', name: 'app_outing_delete', requirements: ['id' => '\d+'], methods: ['POST'])]
+    #[Route('/{id}', name: 'app_outing_delete',requirements: ['id' => '\d+'], methods: ['POST'])]
     public function delete(Request $request, Outing $outing, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $outing->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$outing->getId(), $request->request->get('_token'))) {
             $entityManager->remove($outing);
             $entityManager->flush();
         }
@@ -171,9 +179,6 @@ class OutingController extends AbstractController
 
             $this->addFlash('danger','La sortie n\'existe pas ');
         }
-
-
-
         // Supprimer l'utilisateur de la sortie
         $outing->removeUser($user);
         $entityManager->flush();
