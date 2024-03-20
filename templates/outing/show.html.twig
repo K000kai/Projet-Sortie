@@ -50,12 +50,16 @@
     <table class="table">
         <thead>
             <tr>
+                <th>Pseudo</th>
                 <th>Nom</th>
+
             </tr>
+
         </thead>
         <tbody>
         {% for user in outing.user %}
             <tr>
+                <td> <a href="{{ path('app_showProfile', {'id': user.id}) }}">{{ user.profile.username }}</a></td>
                 <td>{{ user.name}}  {{user.firstName }}</td>
             </tr>
         {% endfor %}
