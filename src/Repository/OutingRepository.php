@@ -78,11 +78,13 @@ class OutingRepository extends ServiceEntityRepository
                 ->setParameter('nonInscrit', $searchFilterData->nonInscrit);
         }
 
-        /*if (!empty($searchFilterData->pastOutings)) {
+        if (($searchFilterData->pastOutings)) {
+            $date = new \DateTime();
             $query =$query
                 ->andWhere('outing.dateTimeStart <= :pastOutings')
-                ->setParameter('pastOutings', $searchFilterData->pastOutings);
-        }*/
+                ->setParameter('pastOutings', $date
+                );
+        }
 
         return $query->getQuery()->getResult();
     }
