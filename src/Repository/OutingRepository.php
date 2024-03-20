@@ -87,6 +87,16 @@ class OutingRepository extends ServiceEntityRepository
         return $query->getQuery()->getResult();
     }
 
+
+    public function countUserInOuting(): int {
+            $countUserRegister = $this->createQueryBuilder('o')
+                ->select('COUNT(DISTINCT u.id)')
+                ->leftJoin('o.User', 'u')
+                ->getQuery()
+                ->getSingleScalarResult();
+            return $countUserRegister;
+    }
+
     //    /**
     //     * @return Outing[] Returns an array of Outing objects
     //     */
