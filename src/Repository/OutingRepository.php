@@ -63,16 +63,26 @@ class OutingRepository extends ServiceEntityRepository
             ;
         }
         if (!empty($searchFilterData->organisateur)) {
-            //$name = $user->getName();
-            //$firstName = $user->getFirstName();
-            //$organizer = $firstName . $name;
             $query =$query
                 ->andWhere(' outing.Organizer = :organisateur')
                 ->setParameter('organisateur', $searchFilterData->organisateur);
-                //->setParameter('organisateur', $searchFilterData->organisateur);
-                //->setParameter('organisateur', "%{$firstName}{$name"%{)
-
         }
+        if (!empty($searchFilterData->inscrit)) {
+            $query =$query
+                ->andWhere('user.id = :inscrit')
+                ->setParameter('inscrit', $searchFilterData->inscrit);
+        }
+        if (($searchFilterData->nonInscrit)) {
+            $query =$query
+                ->andWhere(':nonInscrit NOT MEMBER OF outing.User')
+                ->setParameter('nonInscrit', $searchFilterData->nonInscrit);
+        }
+
+        /*if (!empty($searchFilterData->pastOutings)) {
+            $query =$query
+                ->andWhere('outing.dateTimeStart <= :pastOutings')
+                ->setParameter('pastOutings', $searchFilterData->pastOutings);
+        }*/
 
         return $query->getQuery()->getResult();
     }
