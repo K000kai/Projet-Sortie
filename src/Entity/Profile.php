@@ -24,7 +24,7 @@ class Profile
     private ?string $Surname = null;
 
     #[ORM\Column]
-    private ?int $Phone = null;
+    private ?string $Phone = null;
 
     #[ORM\Column(length: 255)]
     private ?string $Email = null;
@@ -79,12 +79,12 @@ class Profile
         return $this;
     }
 
-    public function getPhone(): ?int
+    public function getPhone(): ?string
     {
         return $this->Phone;
     }
 
-    public function setPhone(int $Phone): static
+    public function setPhone(string $Phone): static
     {
         $this->Phone = $Phone;
 

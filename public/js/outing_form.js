@@ -31,9 +31,11 @@ const changeOptions = async (e) => {
     const requestBody = e.target.getAttribute('name') + '=' + e.target.value;
     const updateFormResponse = await updateForm(requestBody, form.getAttribute('action'), form.getAttribute('method'));
     const html = parseTextToHtml(updateFormResponse);
-
+    console.log(form_select_city);
+    console.log(html);
     const new_form_select_location = html.getElementById('outing_location');
     form_select_location.innerHTML = new_form_select_location.innerHTML;
+
 };
 
 form_select_city.addEventListener('change', async (e) => changeOptions(e));

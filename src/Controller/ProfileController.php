@@ -12,13 +12,14 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
  * @method getProfile()
  */
 #[Route('/profile')]
 class ProfileController extends AbstractController
-{
+{   #[isGranted('ROLE_ADMIN')]
     #[Route('/', name: 'app_profile_index', methods: ['GET'])]
     public function index(ProfileRepository $profileRepository): Response
     {
@@ -26,7 +27,7 @@ class ProfileController extends AbstractController
             'profiles' => $profileRepository->findAll(),
         ]);
     }
-
+    #[isGranted('ROLE_ADMIN')]
     #[Route('/new', name: 'app_profile_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -46,8 +47,7 @@ class ProfileController extends AbstractController
             'form' => $form,
         ]);
     }
-
-    #[Route('/profile/show', name: 'app_profile_show', methods: ['GET'])]
+    #[Route('/show', name: 'app_profile_show', methods: ['GET'])]
     public function show(Security $security): Response
     {
         $user = $security->getUser();
@@ -71,12 +71,15 @@ class ProfileController extends AbstractController
     {
         $form = $this->createForm(ProfileType::class, $profile);
         $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($profile);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_profile_index', [], Response::HTTP_SEE_OTHER);
+        try {
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager->persist($profile);
+                $entityManager->flush();
+                $this->addFlash('success', 'Votre profil a bien été modifié');
+                return $this->redirectToRoute('app_outing_index', [], Response::HTTP_SEE_OTHER);
+            }
+        }catch (\Exception $e){
+             $this->addFlash('danger', 'Le pseudo existe déjà, veuillez-en choisir un autre');
         }
 
         return $this->render('profile/edit.html.twig', [
@@ -101,6 +104,7 @@ class ProfileController extends AbstractController
         $profile = $user->getProfile();
         return $this->render('profile/show.html.twig', [
             'profile' => $profile,
+            'user'=>$user
         ]);
 
 

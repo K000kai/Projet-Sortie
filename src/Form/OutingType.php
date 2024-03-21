@@ -16,6 +16,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function Sodium\add;
 
 class OutingType extends AbstractType
 {
@@ -56,6 +57,7 @@ class OutingType extends AbstractType
                 'placeholder'=>'Lieu (choisir une ville)'
 
             ]);
+
 
 
 

@@ -101,10 +101,11 @@ class OutingController extends AbstractController
     #[Route('/{id}/edit', name: 'app_outing_edit',requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function edit(Request $request, Outing $outing, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(OutingType::class, $outing, ['action' => $this->generateUrl('app_outing_new')]);
+        $form = $this->createForm(OutingType::class, $outing, ['action' => $this->generateUrl('app_outing_edit', ['id' => $outing->getId()])]);
         $form->handleRequest($request);
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($outing);
             $entityManager->flush();
             $this->addFlash('success', 'La sortie a bien été modifiée');
             return $this->redirectToRoute('app_outing_index', [], Response::HTTP_SEE_OTHER);
@@ -120,9 +121,10 @@ class OutingController extends AbstractController
     #[Route('/register/{id}', name: 'app_user_register', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function addUser(Request $request, Outing $outing, EntityManagerInterface $entityManager,OutingRepository $outingRepository): Response
     {
-        $entityManager1 = $entityManager;
-        $outing = $entityManager1->getRepository(Outing::class)->find($outing);
-        $userRegister = $outingRepository->countUserInOuting();
+
+        $outing = $entityManager->getRepository(Outing::class)->find($outing);
+        $userRegister = $outingRepository->countUserInOuting($outing);
+
         if (!$outing) {
             $this->addFlash('danger', 'Sortie introuvable');
             return $this->redirectToRoute('app_outing_index');
@@ -136,13 +138,13 @@ class OutingController extends AbstractController
             $this->addFlash('danger','la sortie est déja complète');
             return $this->redirectToRoute('app_outing_index');
         } else {
-            $user = $entityManager1->getRepository(User::class)->find($this->getUser()->getId());
+            $user = $entityManager->getRepository(User::class)->find($this->getUser()->getId());
             $outing->addUser($user);
-            $entityManager1->persist($outing);
-            $entityManager1->flush();
+            $entityManager->persist($outing);
+            $entityManager->flush();
             $this->addFlash('success', 'Vous êtes inscrit à la sortie');
         }
-        return $this->render('user/register.html.twig', [
+        return $this->RedirectToRoute('app_outing_index', [
             'controller_name' => 'OutingController',
         ]);
     }
@@ -164,9 +166,6 @@ class OutingController extends AbstractController
     {
         $user = $entityManager->getRepository(User::class)->find($this->getUser()->getId());
 
-
-
-
         // Vérifier que l'utilisateur est connecté
         if (!$user) {
 
@@ -185,6 +184,6 @@ class OutingController extends AbstractController
 
         $this->addFlash('success', 'Vous êtes désinscrit de la sortie');
         return $this->redirectToRoute('app_outing_index');
-
     }
+
 }

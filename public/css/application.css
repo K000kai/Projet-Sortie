@@ -1,4 +1,6 @@
-
+header{
+    margin-bottom: 100px;
+}
 body {
     background: linear-gradient(#000000, #132135);
     background-attachment: fixed;
@@ -14,3 +16,4 @@ header img{
     width: 20%;
     height: 30%;
 }
+

@@ -15,20 +15,22 @@
         {% endblock %}
     </head>
     <body>
-       <header>
+
+       <header class="fixed-top">
 
                 {% if app.user %}
                     {% include 'partials/_navbar.html.twig'%}
                 {% endif %}
 
 
-            <div class="container">
-                {% include 'partials/_flash_messages.html.twig' %}
-            </div>
+
 
         </header>
 
-        <main>
+        <main style="margin-top: 100px">
+            <div class="container">
+                {% include 'partials/_flash_messages.html.twig' %}
+            </div>
             {% block body %}
 
             {% endblock %}
