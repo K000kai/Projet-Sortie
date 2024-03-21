@@ -70,7 +70,7 @@ class Outing
         return $this->name;
     }
 
-    public function setName(string $name): static
+    public function setName(?string $name): static
     {
         $this->name = $name;
 
@@ -94,7 +94,7 @@ class Outing
         return $this->duration;
     }
 
-    public function setDuration(int $duration): static
+    public function setDuration(?int $duration): static
     {
         $this->duration = $duration;
 
@@ -118,7 +118,7 @@ class Outing
         return $this->nbRegistrationMax;
     }
 
-    public function setNbRegistrationMax(int $nbRegistrationMax): static
+    public function setNbRegistrationMax(?int $nbRegistrationMax): static
     {
         $this->nbRegistrationMax = $nbRegistrationMax;
 
@@ -130,7 +130,7 @@ class Outing
         return $this->infoOuting;
     }
 
-    public function setInfoOuting(string $infoOuting): static
+    public function setInfoOuting(?string $infoOuting): static
     {
         $this->infoOuting = $infoOuting;
 

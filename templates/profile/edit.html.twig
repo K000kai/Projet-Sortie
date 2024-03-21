@@ -1,18 +1,46 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Profile{% endblock %}
+{% block title %}Modifier Profil{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/application.css') }}">
 {% endblock %}
 
 {% block body %}
-    <h1>Edit Profile</h1>
-    <div class="login">
-        {{ include('profile/_form.html.twig')}}
+    <div class="text-center">
+        <h1>Modifier mon profil</h1>
+    </div>
+    <div class="container justify-content-center">
+
+        <div class="row">
+            <div class="col-4">
+
+            </div>
+            <div class="col-4">
+                {{ form_start(form) }}
+                {{ form_row(form.Username) }}
+                {{ form_row(form.Surname) }}
+                {{ form_row(form.Name) }}
+                {{ form_row(form.Email) }}
+                {{ form_row(form.Phone) }}
+            </div>
+            <div class="col-4">
+
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-6 text-end">
+                <button class="btn btn-info">{{ button_label|default('Modifier') }}</button>
+                {{ form_end(form) }}
+            </div>
+            <div class="col-6 text-start">
+                <a class="btn btn-info" href="{{ path('app_outing_index' ) }}">Retour</a>
+            </div>
+        </div>
     </div>
 
-    <a class="btn btn-info" href="{{ path('app_profile_index' ) }}">back to list</a>
 
-    {{ include('profile/_delete_form.html.twig') }}
+
+
 {% endblock %}

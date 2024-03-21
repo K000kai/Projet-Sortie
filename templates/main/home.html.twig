@@ -2,8 +2,14 @@
 
 
 {% block body %}
-    <div class="container">
 
+    <style>
+        .table-rounded {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+    </style>
+    <div class="container">
         <div class>
             <h3>Filter les sorties</h3>
             {% include 'Filter/_filter.html.twig' with {form: form} only %}
@@ -13,7 +19,7 @@
         <h3>Liste des sorties</h3>
         </div>
 
-        <table class="table table-responsive table-info table-striped table-hover text-center">
+        <table class="table table-responsive table-info table-striped table-hover text-center table-rounded">
             <thead>
             <tr>
                 <th>Nom de la Sortie</th>

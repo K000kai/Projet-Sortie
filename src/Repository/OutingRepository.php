@@ -40,48 +40,48 @@ class OutingRepository extends ServiceEntityRepository
 
         if (!empty($searchFilterData->zoneRecherche)) {
             $query =$query
-                ->andWhere('outing.name LIKE :zoneRecherche')
+                ->orWhere('outing.name LIKE :zoneRecherche')
                 ->setParameter('zoneRecherche', "%{$searchFilterData->zoneRecherche}%")
             ;
         }
         if (!empty($searchFilterData->Campus)) {
             $query =$query
-                ->andWhere(' outing.campus = :Campus')
+                ->orWhere(' outing.campus = :Campus')
                 ->setParameter('Campus', $searchFilterData->Campus)
             ;
         }
         if (!empty($searchFilterData->min)) {
             $query =$query
-                ->andWhere(' outing.dateTimeStart >= :min')
+                ->orWhere(' outing.dateTimeStart >= :min')
                 ->setParameter('min', $searchFilterData->min)
             ;
         }
         if (!empty($searchFilterData->max)) {
             $query =$query
-                ->andWhere(' outing.dateTimeStart <= :max')
+                ->orWhere(' outing.dateTimeStart <= :max')
                 ->setParameter('max', $searchFilterData->max)
             ;
         }
         if (!empty($searchFilterData->organisateur)) {
             $query =$query
-                ->andWhere(' outing.Organizer = :organisateur')
+                ->orWhere(' outing.Organizer = :organisateur')
                 ->setParameter('organisateur', $searchFilterData->organisateur);
         }
         if (!empty($searchFilterData->inscrit)) {
             $query =$query
-                ->andWhere('user.id = :inscrit')
+                ->orWhere('user.id = :inscrit')
                 ->setParameter('inscrit', $searchFilterData->inscrit);
         }
         if (($searchFilterData->nonInscrit)) {
             $query =$query
-                ->andWhere(':nonInscrit NOT MEMBER OF outing.User')
+                ->orWhere(':nonInscrit NOT MEMBER OF outing.User')
                 ->setParameter('nonInscrit', $searchFilterData->nonInscrit);
         }
 
         if (($searchFilterData->pastOutings)) {
             $date = new \DateTime();
             $query =$query
-                ->andWhere('outing.dateTimeStart <= :pastOutings')
+                ->orWhere('outing.dateTimeStart <= :pastOutings')
                 ->setParameter('pastOutings', $date
                 );
         }
@@ -90,13 +90,16 @@ class OutingRepository extends ServiceEntityRepository
     }
 
 
-    public function countUserInOuting(): int {
-            $countUserRegister = $this->createQueryBuilder('o')
-                ->select('COUNT(DISTINCT u.id)')
-                ->leftJoin('o.User', 'u')
-                ->getQuery()
-                ->getSingleScalarResult();
-            return $countUserRegister;
+    public function countUserInOuting($outing): int
+    {
+        $countParticipants = $this->createQueryBuilder('o')
+            ->select('COUNT(u.id)')
+            ->leftJoin('o.User', 'u')
+            ->where('o.id = :outingId')
+            ->setParameter('outingId', $outing)
+            ->getQuery()
+            ->getSingleScalarResult();
+        return $countParticipants;
     }
 
     //    /**
